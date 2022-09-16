@@ -8,13 +8,13 @@ function createImgBase(options: ImgOptions): string {
   const canvas = document.createElement('canvas');
   const text = options.content;
   // 因为要实现文字交错效果，所以这里生成两倍宽度的图片
-  canvas.width = options.width * 2;
+  canvas.width = options.width * 2.5;
   canvas.height = options.height;
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    // X轴阴影距离，负值表示往上，正值表示往下
+    // X 轴阴影距离，负值表示往上，正值表示往下
     ctx.shadowOffsetX = 2;
-    // Y轴阴影距离，负值表示往左，正值表示往右
+    // Y 轴阴影距离，负值表示往左，正值表示往右
     ctx.shadowOffsetY = 2;
     // 阴影的模糊程度
     ctx.shadowBlur = 2;
@@ -82,17 +82,18 @@ function addListener(className: string) {
 export function Watermark({
   element = document.getElementsByTagName('body')[0],
   className = 'watermark',
-  width = 340,
-  height = 240,
+  width = 120,
+  height = 120,
   content = '水印',
-  font = '14px PingFang SC, sans-serif',
+  font = '16px PingFang SC, sans-serif',
   color = 'rgba(156, 162, 169, 0.3)',
-  rotate = -14,
+  rotate = -10,
   position = 'absolute',
   top = 0,
   left = 0,
   zIndex = 1000,
 }: WatermarkOptions): void {
+  // 生成图片的配置
   const option = {
     width,
     height,
@@ -111,7 +112,7 @@ export function Watermark({
 
   const dataUri2 = createImgBase({
     ...option,
-    x: 400,
+    x: 200,
     y: 340,
   });
 
@@ -138,8 +139,9 @@ export function Watermark({
   document.head.appendChild(defaultStyle);
   document.head.appendChild(styleEl);
 
+  // 根据 element 进行挂载
   element.setAttribute('class', className);
 
-  // 防止删除类名
+  // 防止删除水印
   addListener(className);
 }
