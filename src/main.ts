@@ -1,11 +1,15 @@
-import { WaterMark } from './Watermark';
+import { Watermark } from './Watermark';
 
 export default function Demo() {
   const app = document.getElementById('app')!;
   app.innerHTML = 'Demo';
-  WaterMark({
+
+  Watermark({
+    // element: app,
     content: 'HarryXiong24',
   });
+
+  app.removeAttribute('class');
 }
 
 Demo();

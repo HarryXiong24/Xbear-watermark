@@ -23,6 +23,7 @@ const plugins = isProduction
       serve({
         open: true,
         contentBase: 'dist',
+        port: 8099,
       }),
       livereload('dist'),
     ];

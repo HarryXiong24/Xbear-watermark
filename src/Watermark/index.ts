@@ -1,5 +1,9 @@
 import { ImgOptions, WatermarkOptions } from './types';
 
+/**
+ * 创建图片
+ * @param {String} options ImgOptions
+ */
 function createImgBase(options: ImgOptions): string {
   const canvas = document.createElement('canvas');
   const text = options.content;
@@ -23,7 +27,45 @@ function createImgBase(options: ImgOptions): string {
   return canvas.toDataURL('image/png');
 }
 
-/*
+/**
+ * 防止删除类名
+ * @param {String} className 类名
+ */
+function addListener(className: string) {
+  const MutationObserver =
+    window.MutationObserver || (window as any).WebKitMutationObserver;
+  const containerList = document.querySelectorAll(`.${className}`);
+  if (MutationObserver) {
+    // PS domTreeList是不可以直接遍历的
+    [...containerList].forEach((container) => {
+      const mutation = new MutationObserver(function () {
+        // 防止删除水印类名
+        const classList = container.classList;
+        if (![classList].includes(className as unknown as DOMTokenList)) {
+          // 如果classList中不存在水印的类名，就重新add进去
+          container.classList.add(className);
+          // 防止重复触发
+          mutation.disconnect();
+          // 重新开始观察
+          mutation.observe(container, {
+            // 这里只需要监听属性
+            attributes: true,
+          });
+        }
+      });
+      mutation.observe(container, {
+        // 这里只需要监听属性
+        attributes: true,
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributeOldValue: true,
+      });
+    });
+  }
+}
+
+/**
  * 生成水印
  * @param {String} className 水印类名
  * @param {Number} width 宽度
@@ -37,8 +79,7 @@ function createImgBase(options: ImgOptions): string {
  * @param {Number} left 距离左部位置
  * @param {Number} zIndex 水印层级
  */
-
-export function WaterMark({
+export function Watermark({
   element = document.getElementsByTagName('body')[0],
   className = 'watermark',
   width = 340,
@@ -98,4 +139,7 @@ export function WaterMark({
   document.head.appendChild(styleEl);
 
   element.setAttribute('class', className);
+
+  // 防止删除类名
+  addListener(className);
 }
