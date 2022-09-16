@@ -1,15 +1,15 @@
-# rollup-ts-starter
+# Xbear-watermark
 
 ## Description
 
-A template for quickly developing projects with Typescript and Rollup.
+Watermark implement.
 
 ## Usage
 
 ```bash
 # Clone it from Github.
-$ git clonehttps://github.com/HarryXiong24/rollup-ts-starter.git
-$ cd rollup-ts-starter
+$ git clone https://github.com/HarryXiong24/Xbear-watermark.git
+$ cd Xbear-watermark
 ```
 
 ```bash
